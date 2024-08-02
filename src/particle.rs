@@ -1,15 +1,18 @@
 use bevy::log::info;
 use bevy::prelude::*;
 use bevy::sprite::MaterialMesh2dBundle;
-use bevy::utils::info;
-use rand::{Rng, random};
+use rand::Rng;
 use crate::Args;
+use crate::fluid::calculate_gradient;
+
+const SMOOTH_RADIUS: f32 = 40.;
+const SPEED: f32 = 100.;
+
+#[derive(Component, Clone)]
+pub struct Position(pub(crate) Vec2);
 
 #[derive(Component)]
-struct Position(Vec2);
-
-#[derive(Component)]
-struct Particle;
+pub struct Particle;
 
 
 pub fn init_particles_random(
@@ -38,9 +41,34 @@ pub fn init_particles_random(
     }
 }
 
-pub fn init_particle_grid() {
+pub fn init_particle_grid(
+    mut commands: Commands,
+    mut meshes: ResMut<Assets<Mesh>>,
+    mut materials: ResMut<Assets<ColorMaterial>>,
+    args: Res<Args>,
+) {
     info!("initial particle generation in grid");
-    todo!()
+    let mut n = args.particle_num;
+    let w = (n as f32).sqrt() + 1.;
+    let bias = Vec2::new(-w / 2. * args.particle_radius * 2., w / 2. * args.particle_radius * 2.);
+    for i in 0..w as usize {
+        for j in 0..w as usize {
+            let pos = args.particle_radius * 2.0 * (i as f32) * Vec2::X - args.particle_radius * 2.0 * (j as f32) * Vec2::Y + bias;
+            commands.spawn((
+                MaterialMesh2dBundle {
+                    mesh: meshes.add(Circle::default()).into(),
+                    material: materials.add(Color::srgb(0.0, 0.0, 1.0)),
+                    transform: Transform::from_translation(pos.extend(1.0))
+                        .with_scale(Vec2::splat(args.particle_radius * 2.).extend(1.)),
+                    ..default()
+                },
+                Position(pos),
+                Particle
+            ));
+            n -= 1;
+            if n == 0 { return; }
+        }
+    }
 }
 
 impl Particle {
