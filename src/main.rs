@@ -3,20 +3,20 @@ mod fluid;
 
 use bevy::prelude::*;
 use clap::{arg, Parser};
-use crate::particle::{init_particle_grid, init_particles_random};
+use crate::particle::{init_particle_grid, init_particles_random, Particle, Position};
 
 #[derive(Parser, Resource, Debug)]
 struct Args {
-    #[arg(default_value_t = 800.0)]
+    #[arg(default_value_t = 400.0)]
     w_width: f32,
-    #[arg(default_value_t = 800.0)]
+    #[arg(default_value_t = 400.0)]
     w_height: f32,
 
     #[arg(default_value = "random")]
     particle_gen: String,
-    #[arg(default_value_t = 100)]
+    #[arg(default_value_t = 160)]
     particle_num: usize,
-    #[arg(default_value_t = 10.0)]
+    #[arg(default_value_t = 5.0)]
     particle_radius: f32,
 }
 
