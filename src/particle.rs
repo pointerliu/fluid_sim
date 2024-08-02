@@ -17,14 +17,12 @@ pub fn init_particles_random(
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<ColorMaterial>>,
     args: Res<Args>,
-    window: Query<&Window>,
 ) {
     info!("initial particle generation randomly");
-    let win = &window.single().resolution;
     let mut rng = rand::thread_rng();
     for _ in 0..args.particle_num {
-        let x = rng.gen_range((-win.width() / 2.0 + args.particle_radius)..(win.width() / 2.0 - args.particle_radius));
-        let y = rng.gen_range((-win.height() / 2.0 + args.particle_radius)..(win.height() / 2.0 - args.particle_radius));
+        let x = rng.gen_range((-args.w_width / 2.0 + args.particle_radius)..(args.w_width / 2.0 - args.particle_radius));
+        let y = rng.gen_range((-args.w_height / 2.0 + args.particle_radius)..(args.w_height / 2.0 - args.particle_radius));
         let pos = Vec2::new(x, y);
         commands.spawn((
             MaterialMesh2dBundle {
