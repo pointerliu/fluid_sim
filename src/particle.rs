@@ -42,4 +42,5 @@ pub fn init_particles_random(
 
 pub fn init_particle_grid() {
     info!("initial particle generation in grid");
+    todo!()
 }
