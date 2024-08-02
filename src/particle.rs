@@ -29,7 +29,7 @@ pub fn init_particles_random(
                 mesh: meshes.add(Circle::default()).into(),
                 material: materials.add(Color::srgb(0.0, 0.0, 1.0)),
                 transform: Transform::from_translation(pos.extend(1.0))
-                    .with_scale(Vec2::splat(args.particle_radius).extend(1.)),
+                    .with_scale(Vec2::splat(args.particle_radius * 2.).extend(1.)),
                 ..default()
             },
             Position(pos),
