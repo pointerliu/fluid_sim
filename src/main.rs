@@ -52,3 +52,33 @@ fn setup(
     // Camera
     commands.spawn(Camera2dBundle::default());
 }
+
+fn check_boundary(
+    window: Query<&Window>,
+    mut ball_query: Query<&mut Position, With<Particle>>,
+    cfg: Res<Args>,
+) {
+    for mut position in &mut ball_query {
+        if position.0.x - cfg.particle_radius <= (-window.single().width() / 2.0) {
+            position.0.x = cfg.particle_radius + (-window.single().width() / 2.0);
+        }
+        if position.0.x + cfg.particle_radius >= (window.single().width() / 2.0) {
+            position.0.x = -cfg.particle_radius + (window.single().width() / 2.0);
+        }
+        if position.0.y - cfg.particle_radius <= (-window.single().height() / 2.0) {
+            position.0.y = cfg.particle_radius + (-window.single().height() / 2.0);
+        }
+        if position.0.y + cfg.particle_radius >= (window.single().height() / 2.0) {
+            position.0.y = -cfg.particle_radius + (window.single().height() / 2.0);
+        }
+    }
+}
+
+fn draw_particles(
+    mut query: Query<(&mut Transform, &Position), With<Particle>>
+) {
+    for (mut trans, &ref position) in &mut query {
+        trans.translation.x = position.0.x;
+        trans.translation.y = position.0.y;
+    }
+}
