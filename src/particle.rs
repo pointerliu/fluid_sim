@@ -44,3 +44,25 @@ pub fn init_particle_grid() {
     info!("initial particle generation in grid");
     todo!()
 }
+
+impl Particle {
+    pub fn update_position(
+        mut particle_query: Query<&mut Position, With<Particle>>,
+    ) {
+        let v: Vec<Position> = particle_query.into_iter().cloned().collect();
+        for mut p1 in &mut particle_query {
+            let t = p1.clone().0;
+            p1.0 -= calculate_gradient(
+                SMOOTH_RADIUS,
+                t,
+                &v,
+            ) * 1. * SPEED;
+            // info!("graident = {}", calculate_gradient(
+            //     SMOOTH_RADIUS,
+            //     t,
+            //     &v
+            // ));
+            // p1.0 += -(Vec2::Y + Vec2::X) * time.delta_seconds() * 500.;
+        }
+    }
+}
