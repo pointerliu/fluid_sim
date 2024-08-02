@@ -26,9 +26,16 @@ fn main() {
 
     App::new()
         .add_plugins(DefaultPlugins)
-        .insert_resource(args)
         .add_systems(Startup, greet_msg)
-        .add_systems(Startup, (setup, init_particles_random).chain())
+        .add_systems(
+            Startup,
+            (
+                setup,
+                if args.particle_gen == "random" { init_particles_random } else { init_particle_grid }
+            ).chain(),
+        )
+        .add_systems(FixedUpdate, (Particle::update_position, check_boundary, draw_particles).chain())
+        .insert_resource(args)
         .run();
 }
 
