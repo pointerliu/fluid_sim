@@ -7,16 +7,16 @@ use crate::particle::{init_particle_grid, init_particles_random, Particle, Posit
 
 #[derive(Parser, Resource, Debug)]
 struct Args {
-    #[arg(default_value_t = 400.0)]
+    #[arg(long, default_value_t = 400.0)]
     w_width: f32,
-    #[arg(default_value_t = 400.0)]
+    #[arg(long, default_value_t = 400.0)]
     w_height: f32,
 
-    #[arg(default_value = "random")]
+    #[arg(long, default_value = "random")]
     particle_gen: String,
-    #[arg(default_value_t = 160)]
+    #[arg(long, default_value_t = 160)]
     particle_num: usize,
-    #[arg(default_value_t = 5.0)]
+    #[arg(long, default_value_t = 5.0)]
     particle_radius: f32,
 }
 
